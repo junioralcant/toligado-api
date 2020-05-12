@@ -7,15 +7,16 @@ const DangerRecordSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  image: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Image",
+    required: true,
+  },
   location: {
     type: String,
   },
 
   description: {
-    type: String,
-  },
-
-  url: {
     type: String,
   },
 
