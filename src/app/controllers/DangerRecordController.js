@@ -1,8 +1,17 @@
 const DangerRecord = require("../models/DangerRecord");
 const Image = require("../models/Image");
+const User = require("../models/User");
 
 class DangerRecordController {
   async index(req, res) {
+    const userLogged = await User.findById(req.userId);
+
+    if (userLogged.provider === false) {
+      const dangers = await DangerRecord.find({ user: userLogged._id });
+
+      return res.json(dangers);
+    }
+
     const dangers = await DangerRecord.paginate(null, {
       populate: ["image"],
       sort: "-createdAt",
