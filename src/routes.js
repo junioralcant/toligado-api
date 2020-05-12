@@ -15,6 +15,11 @@ routes.post("/sessions", SessionController.store);
 
 routes.post("/users", UserController.store);
 
+routes.use(middleware);
+
+/**
+ * Image
+ */
 routes.post(
   "/images",
   multer(multerConfig).single("file"),
@@ -23,14 +28,16 @@ routes.post(
 routes.get("/images", ImageController.index);
 routes.delete("/images/:id", ImageController.destroy);
 
-routes.use(middleware);
-
+/**
+ * Danger Record
+ */
 routes.get("/dangers", DangerRecordController.index);
 routes.post(
   "/dangers",
   multer(multerConfig).single("file"),
   DangerRecordController.store
 );
+routes.put("/dangers/:id", DangerRecordController.updade);
 routes.get("/dangers/:id", DangerRecordController.show);
 routes.delete("/dangers/:id", DangerRecordController.destroy);
 

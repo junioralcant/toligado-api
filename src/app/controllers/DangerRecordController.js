@@ -41,6 +41,18 @@ class DangerRecordController {
     return res.json(danger);
   }
 
+  async updade(req, res) {
+    const danger = await DangerRecord.findOneAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+      }
+    );
+
+    return res.json(danger);
+  }
+
   async destroy(req, res) {
     const danger = await DangerRecord.findById(req.params.id);
     const { image: imageId } = danger;
