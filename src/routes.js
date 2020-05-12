@@ -31,10 +31,7 @@ routes.post(
   multer(multerConfig).single("file"),
   DangerRecordController.store
 );
+routes.get("/dangers/:id", DangerRecordController.show);
 routes.delete("/dangers/:id", DangerRecordController.destroy);
-
-routes.get("/", (req, res) => {
-  return res.send("Ola Mundo 2");
-});
 
 module.exports = routes;
