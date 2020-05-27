@@ -7,7 +7,9 @@ class DangerRecordController {
     const userLogged = await User.findById(req.userId);
 
     if (userLogged.provider === false) {
-      const dangers = await DangerRecord.find({ user: userLogged._id });
+      const dangers = await DangerRecord.find({ user: userLogged._id })
+        .populate("image")
+        .sort("-createdAt");
 
       return res.json(dangers);
     }
