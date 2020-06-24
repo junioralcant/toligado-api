@@ -15,7 +15,7 @@ class DangerRecordController {
     }
 
     const dangers = await DangerRecord.paginate(null, {
-      populate: ["image"],
+      populate: ["image", "user"],
       sort: "-createdAt",
     });
 
