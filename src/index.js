@@ -7,12 +7,24 @@ const mongoose = require("mongoose");
 const path = require("path");
 
 const routes = require("./routes");
+
 const app = express();
+const server = require("http").Server(app);
+const io = require("socket.io")(server);
+
+io.on("connection", (socket) => {
+  console.log("Nova Conexao", socket.id);
+});
 
 mongoose.connect("mongodb://localhost:27017/toligado", {
   useCreateIndex: true,
   useNewUrlParser: true,
   useUnifiedTopology: true,
+});
+
+app.use((req, res, next) => {
+  req.io = io;
+  return next();
 });
 
 app.use(cors());
@@ -25,4 +37,4 @@ app.use(
   express.static(path.resolve(__dirname, "..", "tmp", "uploads"))
 );
 
-app.listen(3001);
+server.listen(3001);

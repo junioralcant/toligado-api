@@ -44,6 +44,11 @@ class DangerRecordController {
       image: image._id,
     });
 
+    req.io.emit("newRecord", {
+      message: "New record.",
+    });
+    console.log("New Record");
+
     return res.json(danger);
   }
 
@@ -54,13 +59,11 @@ class DangerRecordController {
   }
 
   async updade(req, res) {
-    const danger = await DangerRecord.findOneAndUpdate(
-      req.params.id,
-      req.body,
-      {
-        new: true,
-      }
-    );
+    console.log(req.params.id);
+    const { id } = req.params;
+    const danger = await DangerRecord.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
 
     return res.json(danger);
   }
