@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const UserSchema = new mongoose.Schema({
@@ -16,5 +15,15 @@ const UserSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
+
+// methods staticus
+UserSchema.statics = {
+  //craia um token para o usuário
+  generateToken({ id }) {
+    return jwt.sign({ id }, "apptoligado", {
+      expiresIn: 86400, // um período para que esse token inspire
+    });
+  },
+};
 
 module.exports = mongoose.model("User", UserSchema);
