@@ -6,7 +6,7 @@ class DangerRecordController {
   async index(req, res) {
     const userLogged = await User.findById(req.userId);
 
-    if (userLogged.provider === false) {
+    if (userLogged) {
       const dangers = await DangerRecord.find({ user: userLogged._id })
         .populate("image")
         .sort("-createdAt");
@@ -47,7 +47,6 @@ class DangerRecordController {
     req.io.emit("newRecord", {
       message: "New record.",
     });
-    console.log("New Record");
 
     return res.json(danger);
   }
@@ -59,7 +58,6 @@ class DangerRecordController {
   }
 
   async updade(req, res) {
-    console.log(req.params.id);
     const { id } = req.params;
     const danger = await DangerRecord.findByIdAndUpdate(id, req.body, {
       new: true,
