@@ -37,4 +37,4 @@ app.use(
   express.static(path.resolve(__dirname, "..", "tmp", "uploads"))
 );
 
-server.listen(3001);
+server.listen(process.env.PORT || 3001);
