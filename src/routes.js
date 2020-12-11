@@ -37,9 +37,7 @@ routes.delete("/images/:id", ImageController.destroy);
  * Draw
  */
 routes.post(
-  "/draws",
-  multer(multerConfig).single("file"),
-  DrawController.store
+  "/draws", DrawController.store
 );
 routes.get("/draws", DrawController.index);
 routes.get("/draws/:id", DrawController.show);

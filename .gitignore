@@ -4,3 +4,7 @@
 /tmp/uploads/*
 
 switcher_backup.env
+
+.DS_Store
+src/.DS_Store
+src/app/.DS_Store

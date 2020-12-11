@@ -20,10 +20,14 @@ class DrawController {
     var arr1 = [];
 
     records.map((arr) => {
-      if (moment(arr.createdAt).month() === moment(Date().now).month()) {
+      if (moment(arr.createdAt).month() === moment(Date().now).month() && arr.approved === true && arr.drawn === false) {
         arr1.push(arr._id); // copy array
       }
     });
+
+    if(arr1.length === 0) {
+      return res.status(400).json({error:  "Não há nem um registro para ser sorteado"});
+    }
 
     arr1.sort(function () {
       return 0.5 - Math.random();
@@ -32,10 +36,11 @@ class DrawController {
     var i = 0;
     var ids = [];
 
-    for (i; i < 3; i++) {
+    for (i; i < 1; i++) {
       var idsRecord = arr1.pop(); // get the last value of arr1
       ids.push(idsRecord);
     }
+
 
     const draw = await Draw.create({ createAt: Date().now });
 
@@ -45,7 +50,12 @@ class DrawController {
       })
     );
 
+    const record = await DangerRecord.findById(ids[0]);
+
+    record.drawn = true;
+
     await draw.save();
+    await record.save();
 
     return res.json();
   }
@@ -59,7 +69,15 @@ class DrawController {
   }
 
   async destroy(req, res) {
-    await Draw.findOneAndDelete(req.params.id);
+    const draw = await Draw.findById(req.params.id);
+
+    const record = await DangerRecord.findById(draw.idsDraws[0].recordId);
+
+    record.drawn = false;
+
+    await record.save();
+
+    draw.deleteOne();
 
     return res.json();
   }
