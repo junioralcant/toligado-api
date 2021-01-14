@@ -16,7 +16,7 @@ io.on("connection", (socket) => {
   console.log("Nova Conexao", socket.id);
 });
 
-mongoose.connect(process.env.DB_URL, {
+mongoose.connect(String(process.env.DB_URL), {
   useCreateIndex: true,
   useNewUrlParser: true,
   useUnifiedTopology: true,
