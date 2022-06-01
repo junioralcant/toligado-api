@@ -1,23 +1,25 @@
-const DangerRecord = require("../models/DangerRecord");
-const Image = require("../models/Image");
-const User = require("../models/User");
+const DangerRecord = require('../models/DangerRecord');
+const Image = require('../models/Image');
+const User = require('../models/User');
 
 class DangerRecordController {
   async index(req, res) {
     const userLogged = await User.findById(req.userId);
 
     if (userLogged) {
-      const dangers = await DangerRecord.find({ user: userLogged._id })
-        .populate("image")
-        .sort("-createdAt");
+      const dangers = await DangerRecord.find({
+        user: userLogged._id,
+      })
+        .populate('image')
+        .sort('-createdAt');
 
       return res.json(dangers);
     }
 
     const dangers = await DangerRecord.paginate(null, {
       limit: 100,
-      populate: ["image", "user"],
-      sort: "-createdAt",
+      populate: ['image', 'user'],
+      sort: '-createdAt',
     });
 
     return res.json(dangers);
@@ -26,7 +28,12 @@ class DangerRecordController {
   async store(req, res) {
     const userLogged = req.userId;
 
-    const { originalname: name, size, key, location: url = "" } = req.file;
+    const {
+      originalname: name,
+      size,
+      key,
+      location: url = '',
+    } = req.file;
 
     const image = await Image.create({
       name,
@@ -35,7 +42,7 @@ class DangerRecordController {
       url,
     });
 
-    const { location = "", description = "" } = req.body;
+    const { location = '', description = '' } = req.body;
 
     const danger = await DangerRecord.create({
       location,
@@ -44,8 +51,8 @@ class DangerRecordController {
       image: image._id,
     });
 
-    req.io.emit("newRecord", {
-      message: "New record.",
+    req.io.emit('newRecord', {
+      message: 'New record.',
     });
 
     return res.json(danger);
@@ -59,9 +66,13 @@ class DangerRecordController {
 
   async updade(req, res) {
     const { id } = req.params;
-    const danger = await DangerRecord.findByIdAndUpdate(id, req.body, {
-      new: true,
-    });
+    const danger = await DangerRecord.findByIdAndUpdate(
+      id,
+      req.body,
+      {
+        new: true,
+      }
+    );
 
     return res.json(danger);
   }
