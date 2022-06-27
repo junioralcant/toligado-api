@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const jwt = require("jsonwebtoken");
+const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -20,10 +20,10 @@ const UserSchema = new mongoose.Schema({
 UserSchema.statics = {
   //craia um token para o usuário
   generateToken({ id }) {
-    return jwt.sign({ id }, "apptoligado", {
-      expiresIn: 86400, // um período para que esse token inspire
+    return jwt.sign({ id }, 'apptoligado', {
+      expiresIn: 30 * 24 * 60 * 60 * 1000, // um período para que esse token inspire
     });
   },
 };
 
-module.exports = mongoose.model("User", UserSchema);
+module.exports = mongoose.model('User', UserSchema);
