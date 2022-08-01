@@ -11,6 +11,7 @@ class DangerRecordController {
         user: userLogged._id,
       })
         .populate('image')
+        .populate('imageResolved')
         .sort('-createdAt');
 
       return res.json(dangers);
@@ -18,7 +19,7 @@ class DangerRecordController {
 
     const dangers = await DangerRecord.paginate(null, {
       limit: 100,
-      populate: ['image', 'user'],
+      populate: ['image', 'user', 'imageResolved'],
       sort: '-createdAt',
     });
 

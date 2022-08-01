@@ -1,17 +1,31 @@
-const mongoose = require("mongoose");
-const mongoosePagiante = require("mongoose-paginate");
+const mongoose = require('mongoose');
+const mongoosePagiante = require('mongoose-paginate');
 
 const DangerRecordSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: 'User',
     required: true,
   },
+
   image: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Image",
+    ref: 'Image',
     required: true,
   },
+
+  imageResolved: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Image',
+    required: false,
+  },
+
+  resolved: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+
   location: {
     type: String,
   },
@@ -55,4 +69,4 @@ const DangerRecordSchema = new mongoose.Schema({
 });
 
 DangerRecordSchema.plugin(mongoosePagiante);
-module.exports = mongoose.model("DangerRecord", DangerRecordSchema);
+module.exports = mongoose.model('DangerRecord', DangerRecordSchema);
