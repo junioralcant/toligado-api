@@ -1,14 +1,14 @@
-const Draw = require("../models/Draw");
-const DangerRecord = require("../models/DangerRecord");
-const moment = require("moment");
+const Draw = require('../models/Draw');
+const DangerRecord = require('../models/DangerRecord');
+const moment = require('moment');
 
 class DrawController {
   async index(req, res) {
     const draws = await Draw.paginate(null, {
       limit: 100,
-      populate: ["idsDraws.recordId", "idsDraws.recordId.user"],
+      populate: ['idsDraws.recordId', 'idsDraws.recordId.user'],
 
-      sort: "-createdAt",
+      sort: '-createdAt',
     });
 
     return res.json(draws);
@@ -20,13 +20,21 @@ class DrawController {
     var arr1 = [];
 
     records.map((arr) => {
-      if (moment(arr.createdAt).month() === moment(Date().now).month() && arr.approved === true && arr.drawn === false) {
+      if (
+        moment(arr.createdAt).month() ===
+          moment(Date().now).month() &&
+        arr.approved === true &&
+        arr.drawn === false &&
+        moment(arr.createdAt).year() === moment(Date().now).year()
+      ) {
         arr1.push(arr._id); // copy array
       }
     });
 
-    if(arr1.length === 0) {
-      return res.status(400).json({error:  "Não há nem um registro para ser sorteado"});
+    if (arr1.length === 0) {
+      return res
+        .status(400)
+        .json({ error: 'Não há nem um registro para ser sorteado' });
     }
 
     arr1.sort(function () {
@@ -40,7 +48,6 @@ class DrawController {
       var idsRecord = arr1.pop(); // get the last value of arr1
       ids.push(idsRecord);
     }
-
 
     const draw = await Draw.create({ createAt: Date().now });
 
@@ -62,7 +69,7 @@ class DrawController {
 
   async show(req, res) {
     const draw = await Draw.findById(req.params.id).populate([
-      "idsDraws.recordId",
+      'idsDraws.recordId',
     ]);
 
     return res.json(draw);
@@ -71,7 +78,9 @@ class DrawController {
   async destroy(req, res) {
     const draw = await Draw.findById(req.params.id);
 
-    const record = await DangerRecord.findById(draw.idsDraws[0].recordId);
+    const record = await DangerRecord.findById(
+      draw.idsDraws[0].recordId
+    );
 
     record.drawn = false;
 
