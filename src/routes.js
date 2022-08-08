@@ -46,7 +46,11 @@ routes.delete('/draws/:id', DrawController.destroy);
 /**
  * Company
  */
-routes.post('/companies', CompanyController.store);
+routes.post(
+  '/companies',
+  multer(multerConfig).single('file'),
+  CompanyController.store
+);
 routes.get('/companies', CompanyController.index);
 routes.put('/companies/:id', CompanyController.update);
 routes.delete('/companies/:id', CompanyController.destroy);

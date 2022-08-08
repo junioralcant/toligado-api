@@ -9,6 +9,11 @@ const Company = new mongoose.Schema({
     type: String,
     required: true,
   },
+  avatar: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Image',
+    required: false,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

@@ -1,14 +1,32 @@
 const Company = require('../models/Company');
-const User = require('../models/User');
+const Image = require('../models/Image');
 
 class CompanyController {
   async index(req, res) {
-    const company = await Company.find();
+    const company = await Company.find().populate('avatar');
 
     return res.json(company);
   }
 
   async store(req, res) {
+    let image = null;
+
+    if (req.file) {
+      const {
+        originalname: name,
+        size,
+        key,
+        location: url = '',
+      } = req.file;
+
+      image = await Image.create({
+        name,
+        size,
+        key,
+        url,
+      });
+    }
+
     const CompanyExists = await Company.findOne({
       cnpj: req.body.cnpj,
     });
@@ -16,7 +34,14 @@ class CompanyController {
     if (CompanyExists) {
       return res.status(400).json({ error: 'CNPJ já cadastrado.' });
     }
-    const company = await Company.create(req.body);
+
+    const { name, cnpj } = req.body;
+
+    const company = await Company.create({
+      name,
+      cnpj,
+      avatar: image,
+    });
 
     return res.json(company);
   }
@@ -36,6 +61,16 @@ class CompanyController {
   }
 
   async destroy(req, res) {
+    const company = await Company.findById(req.params.id);
+
+    const { avatar: imageId } = company;
+
+    if (imageId) {
+      const image = await Image.findById(imageId);
+
+      await image.remove();
+    }
+
     await Company.findOneAndDelete(req.params.id);
 
     return res.json();
