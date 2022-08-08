@@ -60,8 +60,6 @@ class DangerRecordController {
         );
       }
 
-      console.log(dangers.length);
-
       return res.json(dangers);
     }
 
@@ -71,12 +69,8 @@ class DangerRecordController {
           String(danger.user.belongsCompany) === String(company)
       );
 
-      console.log(dangers.length);
-
       return res.json(dangers);
     }
-
-    console.log(dangers.docs.length);
 
     return res.json(dangers.docs);
   }
