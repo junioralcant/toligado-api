@@ -11,6 +11,7 @@ const ResolvedDangerController = require('./app/controllers/ResolvedDangerContro
 
 const middleware = require('./app/middleware/auth');
 const multerConfig = require('./config/multer');
+const CompanyController = require('./app/controllers/CompanyController');
 
 const routes = express.Router();
 
@@ -41,6 +42,14 @@ routes.post('/draws', DrawController.store);
 routes.get('/draws', DrawController.index);
 routes.get('/draws/:id', DrawController.show);
 routes.delete('/draws/:id', DrawController.destroy);
+
+/**
+ * Company
+ */
+routes.post('/companies', CompanyController.store);
+routes.get('/companies', CompanyController.index);
+routes.put('/companies/:id', CompanyController.update);
+routes.delete('/companies/:id', CompanyController.destroy);
 
 /**
  * Danger Record

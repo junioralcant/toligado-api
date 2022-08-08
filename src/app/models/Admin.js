@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const AdminSchema = new mongoose.Schema({
   name: {
@@ -21,9 +21,9 @@ const AdminSchema = new mongoose.Schema({
   },
 });
 
-AdminSchema.pre("save", async function (next) {
+AdminSchema.pre('save', async function (next) {
   // criptografa a senha antes de salvar no bd
-  if (!this.isModified("password")) {
+  if (!this.isModified('password')) {
     // se pass não foi modificado
     return next();
   }
@@ -42,10 +42,10 @@ AdminSchema.methods = {
 AdminSchema.statics = {
   //craia um token para o usuário
   generateToken({ id }) {
-    return jwt.sign({ id }, "apptoligado", {
-      expiresIn: 86400, // um período para que esse token inspire
+    return jwt.sign({ id }, 'apptoligado', {
+      expiresIn: 30 * 24 * 60 * 60 * 1000, // um período para que esse token inspire, // um período para que esse token inspire
     });
   },
 };
 
-module.exports = mongoose.model("Admin", AdminSchema);
+module.exports = mongoose.model('Admin', AdminSchema);

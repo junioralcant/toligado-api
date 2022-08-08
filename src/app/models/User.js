@@ -10,6 +10,14 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+
+  belongsCompany: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Company',
+    default: null,
+    required: true,
+  },
+
   createdAt: {
     type: Date,
     default: Date.now,
