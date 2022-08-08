@@ -6,7 +6,7 @@ class DangerRecordController {
   async index(req, res) {
     const userLogged = await User.findById(req.userId);
 
-    const { initialDate, finalDate } = req.query;
+    const { initialDate, finalDate, company } = req.query;
 
     const filters = {};
 
@@ -53,8 +53,30 @@ class DangerRecordController {
             moment(Date.now()).year()
       );
 
+      if (company) {
+        dangers = dangers.filter(
+          (danger) =>
+            String(danger.user.belongsCompany) === String(company)
+        );
+      }
+
+      console.log(dangers.length);
+
       return res.json(dangers);
     }
+
+    if (company) {
+      dangers = dangers.docs.filter(
+        (danger) =>
+          String(danger.user.belongsCompany) === String(company)
+      );
+
+      console.log(dangers.length);
+
+      return res.json(dangers);
+    }
+
+    console.log(dangers.docs.length);
 
     return res.json(dangers.docs);
   }
