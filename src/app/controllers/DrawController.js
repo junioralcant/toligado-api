@@ -1,43 +1,69 @@
 const Draw = require('../models/Draw');
 const DangerRecord = require('../models/DangerRecord');
 const moment = require('moment');
+const User = require('../models/User');
 
 class DrawController {
   async index(req, res) {
-    const draws = await Draw.paginate(null, {
-      limit: 100,
-      populate: ['idsDraws.recordId', 'idsDraws.recordId.user'],
+    const { company } = req.query;
 
+    let filtersDraws = [];
+
+    let draws = await Draw.paginate(null, {
+      limit: 100000,
+      populate: ['idsDraws.recordId ', 'idsDraws.recordId.user'],
       sort: '-createdAt',
     });
 
-    return res.json(draws);
+    if (company) {
+      await Promise.all(
+        draws.docs.map(async (draw) => {
+          const user = await User.findById(
+            draw.idsDraws[0].recordId.user
+          );
+
+          if (String(user.belongsCompany) === String(company)) {
+            // console.log(draw);
+            filtersDraws.push(draw);
+            return draw;
+          }
+        })
+      ).finally(() => {
+        return res.json(filtersDraws);
+      });
+    } else {
+      return res.json(draws.docs);
+    }
   }
 
   async store(req, res) {
-    const records = await DangerRecord.find();
+    const { company } = req.query;
 
-    var arr1 = [];
+    const records = await DangerRecord.find().populate('user');
 
-    records.map((arr) => {
+    var recordsDraw = [];
+
+    records.map((record) => {
       if (
-        moment(arr.createdAt).month() ===
+        moment(record.createdAt).month() ===
           moment(Date().now).month() &&
-        arr.approved === true &&
-        arr.drawn === false &&
-        moment(arr.createdAt).year() === moment(Date().now).year()
+        record.approved === true &&
+        record.drawn === false &&
+        moment(record.createdAt).year() ===
+          moment(Date().now).year() &&
+        String(record.user.belongsCompany) === String(company)
       ) {
-        arr1.push(arr._id); // copy array
+        recordsDraw.push(record._id); // copy array
       }
     });
 
-    if (arr1.length === 0) {
+    if (recordsDraw.length === 0) {
       return res
         .status(400)
         .json({ error: 'Não há nem um registro para ser sorteado' });
     }
 
-    arr1.sort(function () {
+    recordsDraw.sort(function () {
       return 0.5 - Math.random();
     }); // shuffle arrays
 
@@ -45,7 +71,7 @@ class DrawController {
     var ids = [];
 
     for (i; i < 1; i++) {
-      var idsRecord = arr1.pop(); // get the last value of arr1
+      var idsRecord = recordsDraw.pop(); // get the last value of recordsDraw
       ids.push(idsRecord);
     }
 
