@@ -27,9 +27,9 @@ const DangerRecordSchema = new mongoose.Schema({
   },
 
   resolvedApproved: {
-    type: Boolean,
+    type: String,
     required: true,
-    default: false,
+    default: 'ANALYSIS',
   },
 
   location: {
