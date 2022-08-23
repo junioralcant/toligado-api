@@ -6,8 +6,10 @@ class DangerRecordController {
   async index(req, res) {
     const userLogged = await User.findById(req.userId);
 
-    if (userLogged.blockedUser) {
-      return res.status(400).json({ error: 'Usuário bloqueado!' });
+    if (userLogged) {
+      if (userLogged.blockedUser) {
+        return res.status(400).json({ error: 'Usuário bloqueado!' });
+      }
     }
 
     const { initialDate, finalDate, company } = req.query;
@@ -82,10 +84,11 @@ class DangerRecordController {
   async store(req, res) {
     const userLogged = await User.findById(req.userId);
 
-    if (userLogged.blockedUser) {
-      return res.status(400).json({ error: 'Usuário bloqueado!' });
+    if (userLogged) {
+      if (userLogged.blockedUser) {
+        return res.status(400).json({ error: 'Usuário bloqueado!' });
+      }
     }
-
     const {
       originalname: name,
       size,
@@ -119,8 +122,10 @@ class DangerRecordController {
   async show(req, res) {
     const userLogged = await User.findById(req.userId);
 
-    if (userLogged.blockedUser) {
-      return res.status(400).json({ error: 'Usuário bloqueado!' });
+    if (userLogged) {
+      if (userLogged.blockedUser) {
+        return res.status(400).json({ error: 'Usuário bloqueado!' });
+      }
     }
 
     const danger = await DangerRecord.findById(req.params.id);
@@ -131,8 +136,10 @@ class DangerRecordController {
   async updade(req, res) {
     const userLogged = await User.findById(req.userId);
 
-    if (userLogged.blockedUser) {
-      return res.status(400).json({ error: 'Usuário bloqueado!' });
+    if (userLogged) {
+      if (userLogged.blockedUser) {
+        return res.status(400).json({ error: 'Usuário bloqueado!' });
+      }
     }
 
     const { id } = req.params;
@@ -151,10 +158,11 @@ class DangerRecordController {
   async destroy(req, res) {
     const userLogged = await User.findById(req.userId);
 
-    if (userLogged.blockedUser) {
-      return res.status(400).json({ error: 'Usuário bloqueado!' });
+    if (userLogged) {
+      if (userLogged.blockedUser) {
+        return res.status(400).json({ error: 'Usuário bloqueado!' });
+      }
     }
-
     const danger = await DangerRecord.findById(req.params.id);
 
     const { image: imageId } = danger;
