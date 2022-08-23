@@ -18,6 +18,12 @@ const UserSchema = new mongoose.Schema({
     required: true,
   },
 
+  blockedUser: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+
   createdAt: {
     type: Date,
     default: Date.now,

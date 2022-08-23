@@ -23,6 +23,7 @@ routes.post('/admins', AdminController.store);
 routes.use(middleware);
 
 routes.get('/users', UserController.index);
+routes.put('/users/:id', UserController.update);
 
 /**
  * Image

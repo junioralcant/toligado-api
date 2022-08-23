@@ -24,23 +24,10 @@ class UserController {
   }
 
   async update(req, res) {
-    const { cpf, password } = req.body;
+    const { id } = req.params;
 
-    const user = await User.findById(req.userId); // busca o usuário pela PK
+    const user = await User.findById(id);
 
-    if (cpf != user.cpf) {
-      const userExists = await User.findOne({ where: { cpf } }); // verifica se o cpf informado já existe no bd
-
-      if (userExists) {
-        return res.status(400).json({ error: 'CPF não encontrado.' });
-      }
-    }
-
-    if (password && !(await user.checkPassword(password))) {
-      return res.status(401).json({
-        error: 'A senha informada não corresponde com a antiga senha',
-      });
-    }
     await user.update(req.body, { new: true });
 
     return res.json(user);
