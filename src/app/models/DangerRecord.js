@@ -62,6 +62,10 @@ const DangerRecordSchema = new mongoose.Schema({
     type: String,
   },
 
+  disapprovedReasonResolved: {
+    type: String,
+  },
+
   drawn: {
     type: Boolean,
     required: true,
