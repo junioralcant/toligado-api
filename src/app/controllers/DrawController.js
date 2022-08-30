@@ -7,8 +7,10 @@ class DrawController {
   async index(req, res) {
     const userLogged = await User.findById(req.userId);
 
-    if (userLogged.blockedUser) {
-      return res.status(400).json({ error: 'Usuário bloqueado!' });
+    if (userLogged) {
+      if (userLogged.blockedUser) {
+        return res.status(400).json({ error: 'Usuário bloqueado!' });
+      }
     }
 
     const { company } = req.query;
