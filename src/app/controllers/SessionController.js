@@ -8,8 +8,12 @@ class SessionController {
     if (!email) {
       const user = await User.findOne({ cpf });
 
-      if (user.blockedUser) {
-        return resp.status(400).json({ error: 'Usuário bloqueado!' });
+      if (user) {
+        if (user.blockedUser) {
+          return resp
+            .status(400)
+            .json({ error: 'Usuário bloqueado!' });
+        }
       }
 
       if (!user) {
