@@ -12,6 +12,8 @@ class ResolvedDangerController {
       location: url = '',
     } = req.file;
 
+    console.log(req.file);
+
     const image = await Image.create({
       name,
       size,

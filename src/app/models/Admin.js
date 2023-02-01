@@ -11,6 +11,11 @@ const AdminSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  responsableFor: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Company',
+    default: null,
+  },
   password: {
     type: String,
     required: true,
@@ -41,8 +46,8 @@ AdminSchema.methods = {
 // methods staticus
 AdminSchema.statics = {
   //craia um token para o usuário
-  generateToken({ id }) {
-    return jwt.sign({ id }, 'apptoligado', {
+  generateToken({id}) {
+    return jwt.sign({id}, 'apptoligado', {
       expiresIn: 30 * 24 * 60 * 60 * 1000, // um período para que esse token inspire, // um período para que esse token inspire
     });
   },
