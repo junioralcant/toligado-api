@@ -26,6 +26,10 @@ const DangerRecordSchema = new mongoose.Schema({
     default: false,
   },
 
+  resolvedNote: {
+    type: String,
+  },
+
   resolvedApproved: {
     type: String,
     required: true,
