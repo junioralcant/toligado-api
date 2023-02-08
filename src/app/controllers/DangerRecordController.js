@@ -8,11 +8,11 @@ class DangerRecordController {
 
     if (userLogged) {
       if (userLogged.blockedUser) {
-        return res.status(400).json({ error: 'Usuário bloqueado!' });
+        return res.status(400).json({error: 'Usuário bloqueado!'});
       }
     }
 
-    const { initialDate, finalDate, company } = req.query;
+    const {initialDate, finalDate, company} = req.query;
 
     const filters = {};
 
@@ -86,7 +86,7 @@ class DangerRecordController {
 
     if (userLogged) {
       if (userLogged.blockedUser) {
-        return res.status(400).json({ error: 'Usuário bloqueado!' });
+        return res.status(400).json({error: 'Usuário bloqueado!'});
       }
     }
     const {
@@ -103,11 +103,16 @@ class DangerRecordController {
       url,
     });
 
-    const { location = '', description = '' } = req.body;
+    const {
+      location = '',
+      description = '',
+      riskCategory = 'Outros',
+    } = req.body;
 
     const danger = await DangerRecord.create({
       location,
       description,
+      riskCategory,
       user: userLogged,
       image: image._id,
     });
@@ -124,7 +129,7 @@ class DangerRecordController {
 
     if (userLogged) {
       if (userLogged.blockedUser) {
-        return res.status(400).json({ error: 'Usuário bloqueado!' });
+        return res.status(400).json({error: 'Usuário bloqueado!'});
       }
     }
 
@@ -138,11 +143,11 @@ class DangerRecordController {
 
     if (userLogged) {
       if (userLogged.blockedUser) {
-        return res.status(400).json({ error: 'Usuário bloqueado!' });
+        return res.status(400).json({error: 'Usuário bloqueado!'});
       }
     }
 
-    const { id } = req.params;
+    const {id} = req.params;
 
     const danger = await DangerRecord.findByIdAndUpdate(
       id,
@@ -160,12 +165,12 @@ class DangerRecordController {
 
     if (userLogged) {
       if (userLogged.blockedUser) {
-        return res.status(400).json({ error: 'Usuário bloqueado!' });
+        return res.status(400).json({error: 'Usuário bloqueado!'});
       }
     }
     const danger = await DangerRecord.findById(req.params.id);
 
-    const { image: imageId } = danger;
+    const {image: imageId} = danger;
 
     const image = await Image.findById(imageId);
 

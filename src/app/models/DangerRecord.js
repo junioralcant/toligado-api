@@ -20,6 +20,11 @@ const DangerRecordSchema = new mongoose.Schema({
     required: false,
   },
 
+  riskCategory: {
+    type: String,
+    default: 'Outros',
+  },
+
   resolved: {
     type: Boolean,
     required: true,
