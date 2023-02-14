@@ -2,6 +2,7 @@ const DangerRecord = require('../models/DangerRecord');
 const Image = require('../models/Image');
 const User = require('../models/User');
 const moment = require('moment');
+const {fil} = require('date-fns/locale');
 class DangerRecordController {
   async index(req, res) {
     const userLogged = await User.findById(req.userId);
@@ -12,7 +13,9 @@ class DangerRecordController {
       }
     }
 
-    const {initialDate, finalDate, company} = req.query;
+    const {initialDate, finalDate, company, riskCategory} = req.query;
+
+    // console.log(riskCategory);
 
     const filters = {};
 
@@ -40,6 +43,12 @@ class DangerRecordController {
 
       filters.createdAt.$gte = initial;
       filters.createdAt.$lte = final;
+
+      if (riskCategory) {
+        filters.riskCategory = new RegExp(riskCategory, 'i');
+      }
+    } else if (riskCategory) {
+      filters.riskCategory = new RegExp(riskCategory, 'i');
     }
 
     let dangers = await DangerRecord.paginate(filters, {
