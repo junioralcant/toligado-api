@@ -13,7 +13,8 @@ class DangerRecordController {
       }
     }
 
-    const {initialDate, finalDate, company, riskCategory} = req.query;
+    const {initialDate, finalDate, company, riskCategory, idRecord} =
+      req.query;
 
     // console.log(riskCategory);
 
@@ -72,6 +73,12 @@ class DangerRecordController {
         dangers = dangers.filter(
           (danger) =>
             String(danger.user.belongsCompany) === String(company)
+        );
+      }
+
+      if (idRecord) {
+        dangers = dangers.filter(
+          (danger) => String(danger._id) === String(idRecord)
         );
       }
 
