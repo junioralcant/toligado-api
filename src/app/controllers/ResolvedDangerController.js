@@ -12,14 +12,17 @@ class ResolvedDangerController {
       location: url = '',
     } = req.file;
 
-    console.log(req.file);
-
     const image = await Image.create({
       name,
       size,
       key,
       url,
     });
+
+    if (record.imageResolved) {
+      const image = await Image.findById(record.imageResolved);
+      await image.remove();
+    }
 
     record.resolved = true;
     record.imageResolved = image._id;
