@@ -1,4 +1,6 @@
 const DangerRecord = require('../models/DangerRecord');
+const moment = require('moment');
+
 const Image = require('../models/Image');
 
 class ResolvedDangerController {
@@ -26,7 +28,9 @@ class ResolvedDangerController {
 
     record.resolved = true;
     record.imageResolved = image._id;
-
+    record.resolvedDate = moment(Date.now()).format(
+      'YYYY-MM-DDT00:mm:ss.SSSZ'
+    );
     await record.save();
 
     return res.json(record);

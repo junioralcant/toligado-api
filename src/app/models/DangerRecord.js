@@ -87,6 +87,11 @@ const DangerRecordSchema = new mongoose.Schema({
     default: false,
   },
 
+  resolvedDate: {
+    type: Date,
+    default: null,
+  },
+
   createdAt: {
     type: Date,
     default: Date.now,
