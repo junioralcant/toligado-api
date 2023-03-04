@@ -20,6 +20,7 @@ routes.post('/sessions', SessionController.store);
 routes.post('/users', UserController.store);
 routes.post('/admins', AdminController.store);
 
+routes.get('/admins', AdminController.index);
 routes.use(middleware);
 
 routes.get('/users', UserController.index);

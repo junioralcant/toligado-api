@@ -59,6 +59,14 @@ class DangerRecordController {
       sort: '-createdAt',
     });
 
+    if (idRecord) {
+      dangers = dangers.docs.filter(
+        (danger) => String(danger._id) === String(idRecord)
+      );
+
+      return res.json(dangers);
+    }
+
     // Filtra por dados do mes e ano atual
     if (!initialDate || !finalDate) {
       dangers = dangers.docs.filter(
@@ -73,12 +81,6 @@ class DangerRecordController {
         dangers = dangers.filter(
           (danger) =>
             String(danger.user.belongsCompany) === String(company)
-        );
-      }
-
-      if (idRecord) {
-        dangers = dangers.filter(
-          (danger) => String(danger._id) === String(idRecord)
         );
       }
 
